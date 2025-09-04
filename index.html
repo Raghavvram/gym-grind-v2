@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Workout Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif !important;
+            background-color: #0f172a;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #6366f1, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .swiper {
+            width: 100%;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            
+            width: 960px;
+            height: 540px;
+            
+            transition: transform 0.4s ease-out, filter 0.4s ease-out;
+            
+            filter: brightness(0.5);
+            transform: scale(0.75);
+        }
+
+        .swiper-slide-active {
+            filter: brightness(1);
+            transform: scale(1.05);
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #c7d2fe;
+            transition: color 0.2s;
+        }
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            color: #ffffff;
+        }
+
+    </style>
+</head>
+<body class="text-gray-200 antialiased">
+
+    <div class="container mx-auto px-4 py-8 md:py-16">
+
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+                <span class="gradient-text">THE GRIND</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 font-medium max-w-2xl mx-auto">
+                6-day split for building <strong class="text-white">strength</strong> and <strong class="text-white">muscle</strong>. <span class="text-indigo-400">Consistency is key.</span>
+            </p>
+        </header>
+
+        <div id="loading-spinner" class="flex justify-center items-center h-64">
+             <svg class="animate-spin h-10 w-10 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+             </svg>
+        </div>
+
+        <div id="carousel-wrapper" class="hidden">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const carouselWrapper = document.getElementById('carousel-wrapper');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const swiperWrapper = document.querySelector('.swiper-wrapper');
+
+            const csvData = `Day 1 (SUN): Pull (Width Focus),Day 2 (MON): Push,Day 3 (TUE): Legs,Day 4 (WED): Pull (Thickness Focus),Day 5 (THU): Shoulders,Day 6 (FRI): Legs
+Wide-Grip Lat Pulldowns,Incline Dumbbell Press,Barbell Back Squats,Conventional Deadlifts,Seated Dumbbell OHP,Barbell Front Squats
+3 sets x 10-15 reps,4 sets x 8-12 reps,4 sets x 6-10 reps,3 sets x 4-6 reps,4 sets x 8-12 reps,4 sets x 8-12 reps
+Straight-Arm Pulldowns,Flat Barbell Bench Press,Romanian Deadlifts,Barbell Rows,Cable Lateral Raises,Leg Press
+3 sets x 12-15 reps,3 sets x 8-12 reps,3 sets x 8-12 reps,4 sets x 8-12 reps,4 sets x 12-15 reps,3 sets x 10-15 reps
+Dumbbell Bicep Curls,Seated Dumbbell OHP,Leg Press,Chest-Supported Rows,Dumbbell Lateral Raises,Lying Leg Curls/Glute Bridge
+3 sets x 12-15 reps,3 sets x 10-15 reps,3 sets x 10-15 reps,3 sets x 10-15 reps,3 sets x 12-15 reps,3 sets x 12-15 reps
+Hammer Curls,Decline Dumbbell Press,Leg Extensions,Seated Cable Rows,Face Pulls,Seated Leg Curls
+4 sets x 10-15 reps,3 sets x 8-12 reps,3 sets x 12-15 reps,3 sets x 12-15 reps,4 sets x 15-20 reps,3 sets x 12-15 reps
+Concentration Curls,Triceps Pushdowns,Standing Calf Raises,Barbell Shrugs,Reverse Pec-Deck/Bent-Over Dumbbell Reverse Fly,Standing Calf Raises
+3 sets x 10-15 reps,3 sets x 12-15 reps,5 sets x 15-20 reps,4 sets x 10-15 reps,3 sets x 15-20 reps,5 sets x 15-20 reps`;
+
+            function loadWorkoutData() {
+                try {
+                    const workoutData = parseCSV(csvData);
+                    displayWorkouts(workoutData);
+                    initializeSwiper();
+                    carouselWrapper.classList.remove('hidden');
+                } catch (error) {
+                    console.error("Failed to parse workout data:", error);
+                    swiperWrapper.innerHTML = `<p class="text-center text-red-400">Could not load workout routine.</p>`;
+                } finally {
+                    loadingSpinner.style.display = 'none';
+                }
+            }
+
+            function parseCSV(csvText) {
+                const rows = csvText.trim().split('\n').map(row => row.split(','));
+                if (rows.length === 0) return [];
+                const workoutDays = [];
+                const numDays = rows[0].length;
+                for (let i = 0; i < numDays; i++) {
+                    const dayTitle = rows[0][i].trim();
+                    if (!dayTitle) continue;
+                    const dayData = { title: dayTitle, exercises: [] };
+                    for (let j = 1; j < rows.length; j += 2) {
+                        const exerciseName = rows[j][i]?.trim();
+                        const setsReps = rows[j + 1]?.[i]?.trim();
+                        if (exerciseName && setsReps) {
+                            dayData.exercises.push({ name: exerciseName, reps: setsReps });
+                        }
+                    }
+                    workoutDays.push(dayData);
+                }
+                return workoutDays;
+            }
+
+            function displayWorkouts(workoutData) {
+                if (!workoutData || workoutData.length === 0) {
+                    swiperWrapper.innerHTML = '<p class="text-center">No workout data found.</p>';
+                    return;
+                }
+                swiperWrapper.innerHTML = '';
+
+                workoutData.forEach(day => {
+                    const card = document.createElement('div');
+                    card.className = 'swiper-slide bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 md:p-12 flex flex-col';
+
+                    const dayTitleParts = day.title.split(':');
+                    const cardHeader = `
+                        <div class="mb-8 flex-shrink-0">
+                            <h2 class="text-5xl font-bold text-white mb-2">${dayTitleParts[0] || 'Workout Day'}</h2>
+                            <p class="text-2xl font-semibold text-indigo-400">${dayTitleParts[1]?.trim() || 'Full Body'}</p>
+                        </div>
+                    `;
+
+                    const exercisesList = day.exercises.map(exercise => `
+                        <li class="flex justify-between items-center py-4 border-b border-gray-700/50 last:border-b-0">
+                            <span class="text-xl font-medium text-gray-100 pr-4">${exercise.name}</span>
+                            <span class="text-lg font-semibold text-indigo-300 flex-shrink-0">${exercise.reps}</span>
+                        </li>
+                    `).join('');
+
+                    card.innerHTML = `
+                        ${cardHeader}
+                        <ul class="flex-grow">
+                             ${exercisesList}
+                        </ul>
+                    `;
+                    swiperWrapper.appendChild(card);
+                });
+            }
+
+            function initializeSwiper() {
+                const swiper = new Swiper('.swiper', {
+                    effect: 'coverflow',
+                    grabCursor: true,
+                    centeredSlides: true,
+                    loop: true,
+                    slidesPerView: 'auto',
+                    coverflowEffect: {
+                        rotate: 25,
+                        stretch: 0,
+                        depth: 150,
+                        modifier: 1,
+                        slideShadows: false,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                });
+                
+                const currentDayIndex = new Date().getDay();
+                const targetSlideIndex = currentDayIndex === 6 ? 0 : currentDayIndex;
+
+                swiper.slideToLoop(targetSlideIndex, 0);
+            }
+
+            loadWorkoutData();
+        });
+    </script>
+    <script src="https://embed-js-script.pages.dev/tracker.js"></script>
+</body>
+</html>
