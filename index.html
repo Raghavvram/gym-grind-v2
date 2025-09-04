@@ -56,6 +56,38 @@
             color: #ffffff;
         }
 
+        /* --- NEW: Media Query for Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            .swiper-slide {
+                width: 90%; /* Use a percentage for responsive width */
+                height: auto; /* Let content height be automatic */
+                transform: scale(0.8); /* Adjust the initial scale for smaller viewports */
+            }
+
+            .swiper-slide-active {
+                transform: scale(1); /* Make the active slide fill the available space */
+            }
+
+            /* Override Tailwind's padding utilities for the card on mobile */
+            .swiper-slide.rounded-xl {
+                padding: 1.5rem; 
+            }
+
+            /* Adjust font sizes within the card for better readability on small screens */
+            .swiper-slide h2 {
+                font-size: 2rem; 
+            }
+            .swiper-slide p.text-2xl {
+                font-size: 1.25rem;
+            }
+            .swiper-slide li span.text-xl {
+                font-size: 1rem;
+            }
+            .swiper-slide li span.text-lg {
+                font-size: 0.9rem;
+            }
+        }
+
     </style>
 </head>
 <body class="text-gray-200 antialiased">
@@ -102,7 +134,7 @@ Wide-Grip Lat Pulldowns,Incline Dumbbell Press,Barbell Back Squats,Conventional 
 3 sets x 10-15 reps,4 sets x 8-12 reps,4 sets x 6-10 reps,3 sets x 4-6 reps,4 sets x 8-12 reps,4 sets x 8-12 reps
 Straight-Arm Pulldowns,Flat Barbell Bench Press,Romanian Deadlifts,Barbell Rows,Cable Lateral Raises,Leg Press
 3 sets x 12-15 reps,3 sets x 8-12 reps,3 sets x 8-12 reps,4 sets x 8-12 reps,4 sets x 12-15 reps,3 sets x 10-15 reps
-Dumbbell Bicep Curls,Seated Dumbbell OHP,Leg Press,Chest-Supported Rows,Dumbbell Lateral Raises,Lying Leg Curls/Glute Bridge
+Dumbbell Bicap Curls,Seated Dumbbell OHP,Leg Press,Chest-Supported Rows,Dumbbell Lateral Raises,Lying Leg Curls/Glute Bridge
 3 sets x 12-15 reps,3 sets x 10-15 reps,3 sets x 10-15 reps,3 sets x 10-15 reps,3 sets x 12-15 reps,3 sets x 12-15 reps
 Hammer Curls,Decline Dumbbell Press,Leg Extensions,Seated Cable Rows,Face Pulls,Seated Leg Curls
 4 sets x 10-15 reps,3 sets x 8-12 reps,3 sets x 12-15 reps,3 sets x 12-15 reps,4 sets x 15-20 reps,3 sets x 12-15 reps
